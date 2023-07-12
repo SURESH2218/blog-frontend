@@ -3,19 +3,20 @@ import "./home.css";
 import Sidebar from "../../Components/sidebar/sidebar";
 import Posts from "../../Components/posts/Posts";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
+// import { useLocation } from "react-router-dom";
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
-  const { search } = useLocation();
+  // const { search } = useLocation();
 
   useEffect(() => {
     const fetchposts = async () => {
-      const res = await axios.get("/posts" + search);
+      const res = await axios.get("https://blog-mo1e.onrender.com/api/posts");
+      console.log(res.data);
       setPosts(res.data);
     };
     fetchposts();
-  }, [search]);
+  }, []);
   return (
     <>
       <div className="home">
