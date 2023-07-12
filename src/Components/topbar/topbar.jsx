@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { Context } from "../../Context/Context";
 const Topbar = () => {
   const { user, dispatch } = useContext(Context);
-  const PF = "http://localhost:3001/images/";
+  const PF = "https://blog-mo1e.onrender.com/images/";
   const handleLogout = () => {
     dispatch({ type: "LOGOUT" });
   };
