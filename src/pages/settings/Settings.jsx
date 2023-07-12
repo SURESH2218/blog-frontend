@@ -10,7 +10,7 @@ const Settings = () => {
   const [password, setPassword] = useState("");
   const [success, setSuccess] = useState(false);
   const { user, dispatch } = useContext(Context);
-  const PF = "http://localhost:3001/images/";
+  const PF = "https://blog-mo1e.onrender.com/images/";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
