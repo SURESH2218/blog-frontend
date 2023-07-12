@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import "./home.css";
 import Sidebar from "../../Components/sidebar/sidebar";
 import Posts from "../../Components/posts/Posts";
-import { Header } from "../../Components/header/header";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 
@@ -19,7 +18,6 @@ const Home = () => {
   }, [search]);
   return (
     <>
-      {/* <Header /> */}
       <div className="home">
         <Posts posts={posts} />
         <Sidebar />
