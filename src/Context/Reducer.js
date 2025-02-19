@@ -31,7 +31,7 @@ const Reducer = (state, action) => {
       };
     case "UPDATE_FAILURE":
       return {
-        user: state.user,
+        ...state,
         isFetching: false,
         error: true,
       };
@@ -41,7 +41,6 @@ const Reducer = (state, action) => {
         isFetching: false,
         error: false,
       };
-
     default:
       return state;
   }

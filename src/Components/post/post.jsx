@@ -7,15 +7,19 @@ const Post = ({ post }) => {
 
   return (
     <div className="post">
-      {post.photo && <img className="postImg" src={PF + post.photo} alt="" />}
+      {post.photo && (
+        <img className="postImg" src={`${PF}${post.photo}`} alt="Post visual" />
+      )}
       <div className="postInfo">
         <div className="postCats">
-          {post.categories.map((category) => (
-            <span className="postCat">{category.name}</span>
+          {post.categories?.map((category) => (
+            <span key={category._id} className="postCat">
+              {category.name}
+            </span>
           ))}
         </div>
 
-        <Link to={`post/${post._id}`} className="link">
+        <Link to={`/post/${post._id}`} className="link">
           <span className="postTitle">{post.title}</span>
         </Link>
 

@@ -5,10 +5,15 @@ import { Link } from "react-router-dom";
 
 const Sidebar = () => {
   const [categories, setCategories] = useState([]);
+
   useEffect(() => {
     const getCategories = async () => {
-      const res = await axios.get("/categories");
-      setCategories(res.data);
+      try {
+        const res = await axios.get("/api/categories");
+        setCategories(res.data);
+      } catch (err) {
+        console.error("Failed to fetch categories", err);
+      }
     };
     getCategories();
   }, []);
@@ -19,34 +24,44 @@ const Sidebar = () => {
         <p className="sidebarTitle">About Me</p>
         <img
           className="sidebarImg"
-          src="https://images.pexels.com/photos/17305195/pexels-photo-17305195/free-photo-of-coffee-cup-on-table.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1/"
-          alt=""
+          src="https://images.pexels.com/photos/17305195/pexels-photo-17305195/free-photo-of-coffee-cup-on-table.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+          alt="Coffee cup on table"
         />
         <p className="lorem">
           Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptate
-          accusamus repellat minima corporis sed ducimus nihil,
+          accusamus repellat minima corporis sed ducimus nihil.
         </p>
       </div>
       <div className="sidebarItem">
         <p className="sidebarTitle">CATEGORIES</p>
-        <ul className="sidebarList sidebarlistITEM">
+        <ul className="sidebarList">
           {categories.map((category) => (
-            <Link
-              to={`/?category=${category.name}`}
-              className="link sidebarlistITEM"
-            >
-              <li>{category.name}</li>
-            </Link>
+            <li key={category._id}>
+              <Link
+                to={`/?category=${category.name}`}
+                className="link sidebarListItem"
+              >
+                {category.name}
+              </Link>
+            </li>
           ))}
         </ul>
       </div>
       <div className="sidebarItem">
         <p className="sidebarTitle">FOLLOW US</p>
         <ul className="sidebarSocial">
-          <i class="sidebarIcon fa-brands fa-facebook"></i>
-          <i class="sidebarIcon fa-brands fa-twitter"></i>
-          <i class="sidebarIcon fa-brands fa-instagram"></i>
-          <i class="sidebarIcon fa-brands fa-pinterest"></i>
+          <li>
+            <i className="sidebarIcon fa-brands fa-facebook"></i>
+          </li>
+          <li>
+            <i className="sidebarIcon fa-brands fa-twitter"></i>
+          </li>
+          <li>
+            <i className="sidebarIcon fa-brands fa-instagram"></i>
+          </li>
+          <li>
+            <i className="sidebarIcon fa-brands fa-pinterest"></i>
+          </li>
         </ul>
       </div>
     </div>

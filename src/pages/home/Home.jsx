@@ -3,27 +3,27 @@ import "./home.css";
 import Sidebar from "../../Components/sidebar/sidebar";
 import Posts from "../../Components/posts/Posts";
 import axios from "axios";
-// import { useLocation } from "react-router-dom";
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
-  // const { search } = useLocation();
 
   useEffect(() => {
-    const fetchposts = async () => {
-      const res = await axios.get("https://blog-mo1e.onrender.com/api/posts");
-      console.log(res.data);
-      setPosts(res.data);
+    const fetchPosts = async () => {
+      try {
+        const res = await axios.get("https://blog-mo1e.onrender.com/api/posts");
+        setPosts(res.data);
+      } catch (error) {
+        console.error("Failed to fetch posts:", error);
+      }
     };
-    fetchposts();
+    fetchPosts();
   }, []);
+
   return (
-    <>
-      <div className="home">
-        <Posts posts={posts} />
-        <Sidebar />
-      </div>
-    </>
+    <div className="home">
+      <Posts posts={posts} />
+      <Sidebar />
+    </div>
   );
 };
 

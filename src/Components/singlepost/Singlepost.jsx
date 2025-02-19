@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useCallback } from "react";
 import "./singlepost.css";
 import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
@@ -7,52 +7,62 @@ import { Context } from "../../Context/Context";
 const Singlepost = () => {
   const location = useLocation();
   const path = location.pathname.split("/")[2];
-  const [post, setpost] = useState({});
+  const [post, setPost] = useState({});
   const PF = "https://blog-mo1e.onrender.com/images/";
   const { user } = useContext(Context);
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
   const [updateMode, setUpdateMode] = useState(false);
 
-  const handleDelete = async () => {
+  const getPost = useCallback(async () => {
+    try {
+      const res = await axios.get(`/posts/${path}`);
+      setPost(res.data);
+      setTitle(res.data.title);
+      setDesc(res.data.desc);
+    } catch (err) {
+      console.error("Failed to fetch post", err);
+    }
+  }, [path]);
+
+  useEffect(() => {
+    getPost();
+  }, [getPost]);
+
+  const handleDelete = useCallback(async () => {
     try {
       await axios.delete(`/posts/${post._id}`, {
         data: { username: user.username },
       });
       window.location.replace("/");
-    } catch (err) {}
-  };
+    } catch (err) {
+      console.error("Failed to delete post", err);
+    }
+  }, [post._id, user.username]);
 
-  const handleUpdate = async () => {
+  const handleUpdate = useCallback(async () => {
     try {
       await axios.put(`/posts/${post._id}`, {
         username: user.username,
         title,
         desc,
       });
-      // window.location.reload();
       setUpdateMode(false);
+      getPost(); // Refresh post data
     } catch (err) {
-      console.log(err);
+      console.error("Failed to update post", err);
     }
-  };
-
-  useEffect(() => {
-    const getPost = async () => {
-      const res = await axios.get("/posts/" + path);
-      console.log(res);
-      setpost(res.data);
-      setTitle(res.data.title);
-      setDesc(res.data.desc);
-    };
-    getPost();
-  }, [path]);
+  }, [post._id, user.username, title, desc, getPost]);
 
   return (
     <div className="singlepost">
       <div className="singlepostwrapper">
         {post.photo && (
-          <img className="singlepostimg" src={PF + post.photo} alt="" />
+          <img
+            className="singlepostimg"
+            src={`${PF}${post.photo}`}
+            alt="Post visual"
+          />
         )}
         {updateMode ? (
           <input
@@ -100,7 +110,7 @@ const Singlepost = () => {
           <p className="singlepageDesc">{desc}</p>
         )}
         {updateMode && (
-          <button className="singlePostButton " onClick={handleUpdate}>
+          <button className="singlePostButton" onClick={handleUpdate}>
             Update
           </button>
         )}
